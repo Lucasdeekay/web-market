@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Login</title>
+{% endblock %}
+
+{% block nav %}
+<div class="text-end">
+    <a href="{% url 'Client:signup' %}" type="button" class="btn btn-outline-dark text-white me-2">Signup</a>
+</div>
+{% endblock %}
+
+{% block content %}
+
+<main class="container form-signin" style="width: 40%">
+    <form method="post" action="{% url 'Client:submit-login' %}">
+        {% csrf_token %}
+        <fieldset>
+            <img class="mb-4" src="/docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
+            <h1 class="h3 mb-3 fw-normal">Please login</h1>
+            <div class="form-row mb-3">
+                <div class="col-auto">
+                    {% for message in messages %}
+                    <strong id="passwordHelpInline" class="card-text mb-1 text-danger">
+                        {{ message }}
+                    </strong>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="form-floating mb-1">
+                <input name="username" type="text" class="form-control" id="floatingInput" placeholder="Username">
+                <label for="floatingInput">Username</label>
+            </div>
+            <div class="form-floating mb-1">
+                <input name="password" type="password" class="form-control" id="floatingInput1" placeholder="Password">
+                <label for="floatingInput">Password</label>
+            </div>
+
+            <button class="w-50 btn btn-lg btn-outline-success" type="submit">Login</button>
+            <p class="mt-5 mb-3 text-muted">© 2017–2021</p>
+        </fieldset>
+    </form>
+</main>
+{% endblock %}

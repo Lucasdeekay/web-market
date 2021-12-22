@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>User Signup</title>
+{% endblock %}
+
+{% block nav %}
+<div class="text-end">
+    <a href="{% url 'Client:login' %}" type="button" class="btn btn-outline-dark text-white me-2">Login</a>
+</div>
+{% endblock %}
+
+{% block content %}
+
+<main class="container form-signin" style="width: 40%">
+  <form method="post" action="{% url 'Client:submit-signup' %}">
+      {% csrf_token %}
+    <img class="mb-4" src="/docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
+    <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+
+    <div class="form-row mb-3">
+            <div class="col-auto">
+                {% for message in messages %}
+                <strong id="passwordHelpInline" class="card-text mb-1 text-danger">
+                    {{ message }}
+                </strong>
+                {% endfor %}
+            </div>
+        </div>
+
+    <div class="form-floating mb-1">
+      <input name="first-name" type="text" class="form-control" id="floatingInput" placeholder="First Name">
+      <label for="floatingInput">First name</label>
+    </div>
+    <div class="form-floating mb-1">
+      <input name="last-name" type="text" class="form-control" id="floatingInput1" placeholder="Last Name">
+      <label for="floatingInput">Last name</label>
+    </div>
+    <div class=" mb-1">
+      <select name="gender" class="form-control" id="floatingInput3">
+        <option value="">Gender</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+      </select>
+    </div>
+    <div class="form-floating mb-1">
+      <input name="date-of-birth" type="date" class="form-control" id="floatingInput4" placeholder="Date Of Birth">
+      <label for="floatingInput">Date of birth</label>
+    </div>
+    <div class="form-floating mb-1">
+      <input name="email" type="email" class="form-control" id="floatingInput5" placeholder="name@example.com">
+      <label for="floatingInput">Email address</label>
+    </div>
+    <div class="form-floating mb-1">
+      <input name="phone-number" type="tel" class="form-control" id="floatingInput6" placeholder="Phone Number">
+      <label for="floatingInput">Phone number</label>
+    </div>
+    <div class="form-floating mb-1">
+      <textarea name="address" class="form-control" id="floatingInput8" placeholder="Address" style="height: 100px"></textarea>
+      <label for="floatingInput">Address</label>
+    </div>
+
+    <button class="w-50 btn btn-lg btn-outline-success" type="submit">Proceed</button>
+    <p class="mt-5 mb-3 text-muted">© 2017–2021</p>
+  </form>
+</main>
+{% endblock %}
+

@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{% if product %}
+<title>Details : {{ product.name }}</title>
+{% endif %}
+{% endblock %}
+
+{% block nav %}
+<div class="text-end">
+    <a href="{% url 'Client:logout' %}" type="button" class="btn btn-outline-dark text-white me-2">Logout</a>
+</div>
+{% endblock %}
+
+
+{% block header %}
+<header class="px-3 py-2 bg-dark text-white">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="/" class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none">
+                <svg class="bi me-2" width="40" height="32">
+                    <use xlink:href="#bootstrap"></use>
+                </svg>
+            </a>
+
+            <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
+                <li>
+                    <a href="{% url 'Market:homepage' current_client.id  %}" class="nav-link text-white">
+                        <svg class="bi d-block mx-auto mb-1" width="24" height="24">
+                            <use xlink:href="#home"></use>
+                        </svg>
+                        Home
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Product:store' current_client.id %}" class="nav-link text-white">
+                        <svg class="bi d-block mx-auto mb-1" width="24" height="24">
+                            <use xlink:href="#grid"></use>
+                        </svg>
+                        Store
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Order:cart' current_client.id  %}" class="nav-link text-white">
+                        <svg class="bi d-block mx-auto mb-1" width="24" height="24">
+                            <use xlink:href="#table"></use>
+                        </svg>
+                        Cart
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Client:profile' current_client.id  %}" class="nav-link text-white">
+                        <svg class="bi d-block mx-auto mb-1" width="24" height="24">
+                            <use xlink:href="#speedometer2"></use>
+                        </svg>
+                        Profile
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</header>
+{% endblock %}
+
+{% block content %}
+<div class="form-row mb-3">
+            <div class="col-auto">
+                {% for message in messages %}
+                <strong id="passwordHelpInline" class="card-text mb-1 text-danger">
+                    {{ message }}
+                </strong>
+                {% endfor %}
+            </div>
+        </div>
+
+
+<main class="container">
+    <section class="py-5 text-center container">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="mb-3">Product Details</h1>
+            </div>
+        </div>
+    </section>
+
+    <div class="row mb-2">
+        <div class="col-md-6 py-5 text-center container">
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col-auto d-none d-lg-block">
+                    <svg class="bd-placeholder-img" width="300" height="300" xmlns="http://www.w3.org/2000/svg"
+                         role="img" aria-label="Placeholder: Zafari" preserveAspectRatio="xMidYMid slice"
+                         focusable="false"><title>Placeholder</title>
+                        <rect width="100%" height="100%" fill="#55595c"></rect>
+                        <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
+                    </svg>
+
+                </div>
+                <div class="col p-6 d-flex flex-column position-static">
+                    <div>
+                        <p class="card-text p-3 mb-1 text-dark"><strong>Name: {{ product.name }}</strong></p>
+                        <p class="card-text p-1 mb-4 text-dark"><strong>Price: ${{ product.price }}</strong></p>
+                    </div>
+                    <form method="post" action="{% url 'Order:add-to-cart' current_client.id category.name product.name %}">
+                        {% csrf_token %}
+                        <div class="container d-flex flex-wrap justify-content-center">
+                        <div class="form-floating mb-3">
+                                <input name="quantity" type="number" class="form-control" id="floatingInput"
+                                       placeholder="Quantity">
+                                <label for="floatingInput">Quantity</label>
+                            </div>
+                        </div>
+                        <div class="container d-flex flex-wrap justify-content-center">
+                            <div class="form-floating mb-2">
+                                <button type="submit" class="btn btn-sm btn-outline-primary">Add To Cart</button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

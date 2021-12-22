@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Edit Profile</title>
+{% endblock %}
+
+{% block nav %}
+<div class="text-end">
+    <a href="{% url 'Client:logout' %}" type="button" class="btn btn-outline-dark text-white me-2">Logout</a>
+</div>
+{% endblock %}
+
+{% block header %}
+<header class="px-3 py-2 bg-dark text-white">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="/" class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none">
+                <svg class="bi me-2" width="40" height="32">
+                    <use xlink:href="#bootstrap"></use>
+                </svg>
+            </a>
+
+            <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
+                <li>
+                    <a href="{% url 'Market:homepage' current_client.id  %}" class="nav-link text-white">
+                        <svg class="bi d-block mx-auto mb-1" width="24" height="24">
+                            <use xlink:href="#home"></use>
+                        </svg>
+                        Home
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Product:store' current_client.id %}" class="nav-link text-white">
+                        <svg class="bi d-block mx-auto mb-1" width="24" height="24">
+                            <use xlink:href="#grid"></use>
+                        </svg>
+                        Store
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Order:cart' current_client.id  %}" class="nav-link text-white">
+                        <svg class="bi d-block mx-auto mb-1" width="24" height="24">
+                            <use xlink:href="#table"></use>
+                        </svg>
+                        Cart
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Client:profile' current_client.id  %}" class="nav-link text-white">
+                        <svg class="bi d-block mx-auto mb-1" width="24" height="24">
+                            <use xlink:href="#speedometer2"></use>
+                        </svg>
+                        Profile
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</header>
+{% endblock %}
+
+{% block content %}
+{% if current_user %}
+<main>
+    <h1 class="mb-3 py-3">Edit Profile</h1>
+
+    <div class="form-row mb-3">
+        <div class="col-auto">
+            {% for message in messages %}
+            <strong id="passwordHelpInline"
+                    class="card-text mb-1 {% if message.error %}text-danger{% else %}text-success{% endif %}">
+                {{ message }}
+            </strong>
+            {% endfor %}
+        </div>
+    </div>
+
+    <form method="post" action="{% url 'Client:save-profile' current_client.id %}" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="container py-4">
+
+            <div class="row g-5">
+                <div class="col-md-5 col-lg-4 order-md-last">
+                    {{ imageForm }}
+                </div>
+
+                <div class="col-md-7 col-lg-8">
+                    {% if current_client %}
+                    <ul class="list-group mb-3">
+                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div>
+                                <h6 class="my-0">Bio</h6>
+                            </div>
+                            <span class="text-muted"><textarea name="bio" type="text" class="form-control"
+                                                               id="floatingInput7" cols="50" rows="5"
+                                                               placeholder="{{ current_client.bio }}">{{ current_client.bio }}</textarea></span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div>
+                                <h6 class="my-0">First Name</h6>
+                            </div>
+                            <span class="text-muted"><input name="first-name" type="text" class="form-control"
+                                                            id="floatingInput"
+                                                            placeholder="{{ current_client.first_name }}"
+                                                            value="{{ current_client.first_name }}"></span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div>
+                                <h6 class="my-0">Last Name</h6>
+                            </div>
+                            <span class="text-muted"><input name="last-name" type="text" class="form-control"
+                                                            id="floatingInput1"
+                                                            placeholder="{{ current_client.last_name }}"
+                                                            value="{{ current_client.last_name }}"></span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div>
+                                <h6 class="my-0">Gender</h6>
+                            </div>
+                            <span class="text-muted">
+                    <select name="gender" class="form-control" id="floatingInput3">
+                        {% if current_client.gender == 'Male' %}
+                        <option value="{{ current_client.gender }}">{{ current_client.gender }}</option>
+                        <option value="Female">Female</option>
+                        {% elif current_client.gender == 'Female' %}
+                        <option value="{{ current_client.gender }}">{{ current_client.gender }}</option>
+                        <option value="Male">Male</option>
+                        {% endif %}
+                      </select>
+                </span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div>
+                                <h6 class="my-0">Email</h6>
+                            </div>
+                            <span class="text-muted"><input name="email" type="email" class="form-control"
+                                                            id="floatingInput5"
+                                                            placeholder="{{ current_client.email }}"
+                                                            value="{{ current_client.email }}"></span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div>
+                                <h6 class="my-0">Phone Number</h6>
+                            </div>
+                            <span class="text-muted"><input name="phone-number" type="tel" class="form-control"
+                                                            id="floatingInput6"
+                                                            placeholder="{{ current_client.phone_number }}"
+                                                            value="{{ current_client.phone_number }}"></span>
+                        </li>
+                    </ul>
+                    <div class="input-group justify-content-center">
+                        <button type="submit" class="w-50 btn btn-outline-success" style="width: 200px">Save</button>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </form>
+</main>
+{% endif %}
+{% endblock %}

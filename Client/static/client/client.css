@@ -1,0 +1,14 @@
+.profile-picture{
+width: 200px;
+height: 200px;
+-webkit-border-radius: 500px;
+border-radius: 500px;
+-webkit-box-shadow:inset 5px 5px 15px 10px #000000;
+box-shadow:inset 5px 5px 15px 10px #000000;
+}
+
+.h{
+background-color: darkred;
+    color: white;
+    text-align: center;
+}

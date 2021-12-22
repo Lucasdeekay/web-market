@@ -1,0 +1,201 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block static %}
+<link rel="stylesheet" href="{% static 'client/client.css' %}" type="text/css">
+{% endblock %}
+
+
+{% block title %}
+<title>My Profile</title>
+{% endblock %}
+
+{% block nav %}
+<div class="text-end">
+    <a href="{% url 'Client:logout' %}" type="button" class="btn btn-outline-dark text-white me-2">Logout</a>
+</div>
+{% endblock %}
+
+
+{% block header %}
+<header class="px-3 py-2 bg-dark text-white">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="/" class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none">
+                <svg class="bi me-2" width="40" height="32">
+                    <use xlink:href="#bootstrap"></use>
+                </svg>
+            </a>
+
+            <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
+                <li>
+                    <a href="{% url 'Market:homepage' current_client.id  %}" class="nav-link text-white">
+                        <svg class="bi d-block mx-auto mb-1" width="24" height="24">
+                            <use xlink:href="#home"></use>
+                        </svg>
+                        Home
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Product:store' current_client.id %}" class="nav-link text-white">
+                        <svg class="bi d-block mx-auto mb-1" width="24" height="24">
+                            <use xlink:href="#grid"></use>
+                        </svg>
+                        Store
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Order:cart' current_client.id  %}" class="nav-link text-white">
+                        <svg class="bi d-block mx-auto mb-1" width="24" height="24">
+                            <use xlink:href="#table"></use>
+                        </svg>
+                        Cart
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Client:profile' current_client.id  %}" class="nav-link text-white">
+                        <svg class="bi d-block mx-auto mb-1" width="24" height="24">
+                            <use xlink:href="#speedometer2"></use>
+                        </svg>
+                        Profile
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</header>
+{% endblock %}
+
+{% block content %}
+<main>
+    <h1 class="mb-3 py-3">My Profile</h1>
+
+    <div class="form-row mb-3">
+        <div class="col-auto">
+            {% for message in messages %}
+            <strong id="passwordHelpInline"
+                    class="card-text mb-1 {% if message.error %}text-danger{% else %}text-success{% endif %}">
+                {{ message }}
+            </strong>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% if current_client %}
+    <div class="text-center">
+        <img src="/media/{{ current_client.image }}" class="profile-picture" width="" alt="Profile Picture">
+    </div>
+
+    {% if current_user %}
+    <div class="container py-4">
+
+        <div class="row g-5">
+            <div class="col-md-5 col-lg-4 order-md-last">
+                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-primary">Login Details</span>
+                </h4>
+
+                <ul class="list-group mb-3">
+                    <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <div>
+                            <h6 class="my-0">Client</h6>
+                        </div>
+                        <span class="text-muted">{{ current_user.client }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <div>
+                            <h6 class="my-0">Username</h6>
+                        </div>
+                        <span class="text-muted">{{ current_user.username }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <div>
+                            <h6 class="my-0">Status</h6>
+                        </div>
+                        <span class="h6 text-success">Online</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <div class="input-group">
+                            <a href="{% url 'Client:change-password' current_client.id %}" type="button"
+                               class="btn btn-outline-success">Change Password</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+
+            <div class="col-md-7 col-lg-8">
+                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-primary">USER PROFILE</span>
+                </h4>
+
+                <ul class="list-group mb-3">
+                    <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <div>
+                            <h6 class="my-0">Bio</h6>
+                        </div>
+                        <span class="text-muted">
+                            <small>{{ current_client.bio }}</small>
+                        </span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <div>
+                            <h6 class="my-0">First Name</h6>
+                        </div>
+                        <span class="text-muted">{{ current_client.first_name }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <div>
+                            <h6 class="my-0">Last Name</h6>
+                        </div>
+                        <span class="text-muted">{{ current_client.last_name }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <div>
+                            <h6 class="my-0">Date Of Birth</h6>
+                        </div>
+                        <span class="text-muted">{{ current_client.date_of_birth }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <div>
+                            <h6 class="my-0">Gender</h6>
+                        </div>
+                        <span class="text-muted">{{ current_client.gender }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <div>
+                            <h6 class="my-0">Email</h6>
+                        </div>
+                        <span class="text-muted">{{ current_client.email }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <div>
+                            <h6 class="my-0">Phone Number</h6>
+                        </div>
+                        <span class="text-muted">{{ current_client.phone_number }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <div>
+                            <h6 class="my-0">Address</h6>
+                        </div>
+                        <span class="text-muted">{{ current_client.address }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <div class="input-group">
+                            <a href="{% url 'Client:edit-profile' current_client.id %}" type="button"
+                               class="btn btn-outline-success">Edit Profile</a>
+                        </div>
+                    </li>
+                </ul>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</main>
+
+
+{% block script %}
+<script src="{% static 'client/client.js' %}"></script>
+{% endblock %}
+{% endblock %}

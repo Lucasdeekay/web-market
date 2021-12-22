@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+<title>My Cart</title>
+{% endblock %}
+
+{% block nav %}
+<div class="text-end">
+    <a href="{% url 'Client:logout' %}" type="button" class="btn btn-outline-dark text-white me-2">Logout</a>
+</div>
+{% endblock %}
+
+
+{% block header %}
+<header class="px-3 py-2 bg-dark text-white">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="/" class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none">
+                <svg class="bi me-2" width="40" height="32">
+                    <use xlink:href="#bootstrap"></use>
+                </svg>
+            </a>
+
+            <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
+                <li>
+                    <a href="{% url 'Market:homepage' current_client.id  %}" class="nav-link text-white">
+                        <svg class="bi d-block mx-auto mb-1" width="24" height="24">
+                            <use xlink:href="#home"></use>
+                        </svg>
+                        Home
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Product:store' current_client.id %}" class="nav-link text-white">
+                        <svg class="bi d-block mx-auto mb-1" width="24" height="24">
+                            <use xlink:href="#grid"></use>
+                        </svg>
+                        Store
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Order:cart' current_client.id  %}" class="nav-link text-white">
+                        <svg class="bi d-block mx-auto mb-1" width="24" height="24">
+                            <use xlink:href="#table"></use>
+                        </svg>
+                        Cart
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Client:profile' current_client.id  %}" class="nav-link text-white">
+                        <svg class="bi d-block mx-auto mb-1" width="24" height="24">
+                            <use xlink:href="#speedometer2"></use>
+                        </svg>
+                        Profile
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</header>
+{% endblock %}
+
+{% block content %}
+<div class="form-row mb-3">
+        <div class="col-auto">
+            {% for message in messages %}
+            <strong id="passwordHelpInline"
+                    class="card-text mb-1 {% if message.error %}text-danger{% else %}text-success{% endif %}">
+                {{ message }}
+            </strong>
+            {% endfor %}
+        </div>
+    </div>
+
+<main class="py-5 text-center container">
+    <h2 class="mb-4">My Cart</h2>
+    <div class="table-responsive">
+        <table class="table table-striped table-sm">
+            <thead>
+            <tr>
+                <th>No</th>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Total Cost($)</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Status</th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for order in current_user_orders %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ order.product }}</td>
+                <td>{{ order.quantity }}</td>
+                <td>{{ order.total_cost }}</td>
+                <td>{{ order.date }}</td>
+                <td>{{ order.time }}</td>
+                <td>
+                <svg width="30" height="50">
+                    {% if order.status %}
+                    <circle cx="11" cy="20" r="10" stroke="black" stroke-width="2" fill="green" />
+                    {% else %}
+                    <circle cx="11" cy="20" r="10" stroke="black" stroke-width="2" fill="red" />
+                    {% endif %}
+                    </svg>
+                </td>
+                <td>
+                    {% if order.status %}
+                    <a href="{% url 'Order:cancel-order' current_client.id order.id %}" type="button" class="btn btn-outline-warning text-dark"><strong>Cancel Order</strong></a>
+                    {% else %}
+                    <a href="{% url 'Order:make-order' current_client.id order.id %}" type="button" class="btn btn-outline-primary"><strong>Make Order</strong></a>
+                    {% endif %}
+                </td>
+                <td><a href="{% url 'Order:delete-order' current_client.id order.id %}" type="button" class="btn btn-outline-danger"><strong>Delete</strong></a></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="{% url 'Order:payment' current_client.id %}" class="btn btn-sm btn-outline-secondary"><strong>Proceed To Payment</strong></a>
+    </div>
+</main>
+
+{% endblock %}
